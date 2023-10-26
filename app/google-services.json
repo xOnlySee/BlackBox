@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "365891457278",
+    "project_id": "blackbox-10c15",
+    "storage_bucket": "blackbox-10c15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365891457278:android:6b8841025b2ed18a6c55af",
+        "android_client_info": {
+          "package_name": "com.example.blackbox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEzAIfJUx-qk9pRF8rJQI6-FCgCdvYers"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
