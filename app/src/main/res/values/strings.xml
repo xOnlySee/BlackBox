@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Black Box</string>
+    <string name="email_error">Comprueba que este bien formateado el correo electrónico</string>
+    <string name="password_error">Comprueba que la contraseña tiene los 8 caracteres</string>
 </resources>

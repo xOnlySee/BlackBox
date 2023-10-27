@@ -50,4 +50,7 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-auth:20.0.0")
     implementation("com.google.android.gms:play-services-identity:18.0.0")
+
+    //Implementación de AwesomeValidation
+    implementation ("com.basgeekball:awesome-validation:4.3")
 }
