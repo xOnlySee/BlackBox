@@ -2,15 +2,14 @@ package com.example.blackbox;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ScrollView;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -31,9 +30,21 @@ public class Login extends AppCompatActivity {
     //Declaramos los elementos necesarios
     TextInputEditText inputEmail, inputPassword, inputConfirmPassword;
     MaterialButton createAccountButton;
-    ConstraintLayout layout;
+    ScrollView layout;
     AwesomeValidation awesomeValidation;
     FirebaseAuth firebaseAuth;
+
+    /**
+     * Declaramos la funcionabilidad del botón de volver atras
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        //Creamos un Intent que vaya a la actividad de inicio de sesión
+        Intent intent = new Intent(Login.this, SignIn.class);
+        startActivity(intent);
+    }
 
     @SuppressLint("MissingInflatedId")
     @Override

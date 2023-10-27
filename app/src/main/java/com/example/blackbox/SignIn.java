@@ -1,17 +1,24 @@
 package com.example.blackbox;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * @author Only See
@@ -22,7 +29,8 @@ public class SignIn extends AppCompatActivity {
     TextInputEditText inputEmail, inputPassword;
     TextView changePasswordText, loginText;
     MaterialButton signInButton;
-    ConstraintLayout layout;
+    ScrollView layout;
+    FirebaseAuth firebaseAuth;
 
     /**
      * Método donde definiremos la funcionabilidad del botón de volver atras
@@ -59,6 +67,9 @@ public class SignIn extends AppCompatActivity {
 
         //Identificamos el ConstrainLayout
         layout = findViewById(R.id.signInScreen);
+
+        //Instanciamos el objeto de la clase FirebaseAuth
+        firebaseAuth = FirebaseAuth.getInstance();
 
         //Añadimos la funcionabilidad al TextView de cambiar la contraseña
         changePasswordText.setOnClickListener(new View.OnClickListener() {
@@ -106,10 +117,37 @@ public class SignIn extends AppCompatActivity {
                 //En cualquier otro caso
                 } else {
                     //Realizamos las operaciones para realizar el inicio de sesión
+                    signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
+                }
+            }
+        });
+    }
 
-                    /*
-                    HACER EL INICIO DE SESIÓN
-                     */
+    /**
+     * Método donde iniciaremos sesión con el email y la contraseña
+     * @param email Variable de tipo String que representa el email
+     * @param password Variable de tipo String que representa la contraseña
+     */
+    public void signIn(String email, String password) {
+        //Usamos el objeto de la clase FirebaseAuth para iniciar sesión
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            /**
+             * Método donde comprobaremos si se puede iniciar sesión o no
+             * @param task Objeto de la clase Task
+             */
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                //En caso de que el proceso se haya llevado de forma exitosa
+                if (task.isSuccessful()) {
+                    Log.i("Inicio de sesión", "Inicio de sesión de forma correcta");
+
+                //En caso contrario...
+                } else if (!task.isSuccessful()) {
+                    //Mostrarmos por medio de una Snackbar de lo ocurrido al usuario
+                    Snackbar snackbar = Snackbar.make(layout, "Verifica la información", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
+                    Log.e("Inicio de sesión", "Error a la hora de iniciar sesión");
                 }
             }
         });
