@@ -1,4 +1,4 @@
-package com.example.blackbox;
+package com.example.blackbox.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.example.blackbox.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -20,8 +21,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
-
-import java.util.List;
 
 /**
  * @author Only See
@@ -100,6 +99,8 @@ public class ChangePassword extends AppCompatActivity {
      * @param email Variable de tipo String donde almacenará el email
      */
     public void verifyAccount(String email) {
+        firebaseAuth.setLanguageCode("es");
+
         //Usamos el objeto de la clase FirebaseAuth donde le pasamos el email para comprobar que la cuenta existe
         firebaseAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
             /**
@@ -110,23 +111,12 @@ public class ChangePassword extends AppCompatActivity {
             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
                 //En caso de que el proceso haya salido de forma exitosa
                 if (task.isSuccessful()) {
-                    //Almacenamos en un listado los métodos de inicio de sesión
-                    List<String> singInMethods = task.getResult().getSignInMethods();
+                    boolean exist = !task.getResult().getSignInMethods().isEmpty();
 
-                    //Comprobamos si el usuario esta registrado
-
-                    //En caso de que el usuario este registrado...
-                    if (singInMethods != null && !singInMethods.isEmpty()) {
+                    if (exist) {
                         Log.i("Cuenta", "La cuenta SI esta registrada");
-
-                        //Llamamos al método y le pasamos el email
-                        changePassword(email);
-
-                    //En cualquer otro caso...
                     } else {
                         Log.e("Cuenta", "La cuenta NO esta registrada");
-                        Snackbar snackbar = Snackbar.make(layout, "La cuenta no existe", Snackbar.LENGTH_SHORT);
-                        snackbar.show();
                     }
                 }
             }

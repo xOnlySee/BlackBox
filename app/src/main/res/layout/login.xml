@@ -5,12 +5,12 @@
     android:id="@+id/loginInScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondo">
+    android:background="@drawable/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".Login">
+        tools:context=".activities.Login">
 
         <TextView
             android:id="@+id/createAccountText_logInScreen"

@@ -1,8 +1,7 @@
-package com.example.blackbox;
+package com.example.blackbox.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.blackbox.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -139,7 +139,9 @@ public class SignIn extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //En caso de que el proceso se haya llevado de forma exitosa
                 if (task.isSuccessful()) {
-                    Log.i("Inicio de sesión", "Inicio de sesión de forma correcta");
+                    //Creamos un Intent que vaya a la pantalla principal donde contendrá los distintos fragmentos
+                    Intent intent = new Intent(SignIn.this, MainScreen.class);
+                    startActivity(intent);
 
                 //En caso contrario...
                 } else if (!task.isSuccessful()) {
