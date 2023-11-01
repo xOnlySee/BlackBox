@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.blackbox.R;
 import com.example.blackbox.fragments.Home;
@@ -35,6 +36,12 @@ public class MainScreen extends AppCompatActivity {
 
         //Usamos el BottomNavigationView para declararle la funcionalidad
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+
+        //Creamos un Bundle para obtener los datos que otras actividades
+        Bundle bundle = getIntent().getExtras();
+
+        //Añadimos los argumentos necesarios a los fragmentos necesarios
+        home.setArguments(bundle);
 
         //Usamos el método loadFragment() donde especificamos el fragmento que se carga de forma predeterminada
         loadFragment(home);

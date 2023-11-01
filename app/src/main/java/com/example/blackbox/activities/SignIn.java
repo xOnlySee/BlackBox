@@ -19,6 +19,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * @author Only See
@@ -31,6 +36,9 @@ public class SignIn extends AppCompatActivity {
     MaterialButton signInButton;
     ScrollView layout;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore firestore;
+    CollectionReference collectionReference;
+    private String idDocumentValue;
 
     /**
      * Método donde definiremos la funcionabilidad del botón de volver atras
@@ -70,6 +78,12 @@ public class SignIn extends AppCompatActivity {
 
         //Instanciamos el objeto de la clase FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //Intanciamos el objeto de la clase FirebaseFireStore
+        firestore = FirebaseFirestore.getInstance();
+
+        //Instanciamos el objeto de la clase CollectionReference
+        collectionReference = firestore.collection("perfil");
 
         //Añadimos la funcionabilidad al TextView de cambiar la contraseña
         changePasswordText.setOnClickListener(new View.OnClickListener() {
@@ -139,17 +153,43 @@ public class SignIn extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //En caso de que el proceso se haya llevado de forma exitosa
                 if (task.isSuccessful()) {
-                    //Creamos un Intent que vaya a la pantalla principal donde contendrá los distintos fragmentos
-                    Intent intent = new Intent(SignIn.this, MainScreen.class);
-                    startActivity(intent);
+                    //Llamamos al método para obtener el ID del documento del usuario e iniciar sesión
+                    documentID(inputEmail.getText().toString());
 
                 //En caso contrario...
                 } else if (!task.isSuccessful()) {
                     //Mostrarmos por medio de una Snackbar de lo ocurrido al usuario
                     Snackbar snackbar = Snackbar.make(layout, "Verifica la información", Snackbar.LENGTH_LONG);
                     snackbar.show();
+                }
+            }
+        });
+    }
 
-                    Log.e("Inicio de sesión", "Error a la hora de iniciar sesión");
+    /**
+     * Método donde obtendremos el ID del documento del usuario
+     * @param email Variable de tipo String que representa el email del usuario
+     */
+    public void documentID(String email) {
+        //Usamos los métodos necesarios para obtener el ID del documento del usuario
+        collectionReference.whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            /**
+             * Almacenamos en la variable "idDocumentValue" el ID del documento del usuario
+             * @param task Objeto de la clase Task
+             */
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //En caso de que el proceso se haya llevado acabo de forma exitosa...
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        //Almacenamos el resultado en la variable indicada
+                        idDocumentValue = documentSnapshot.getId();
+
+                        //Creamos un Intent que vaya a la pantalla principal donde contendrá los distintos fragmentos
+                        Intent intent = new Intent(SignIn.this, MainScreen.class);
+                            intent.putExtra("idDocument", idDocumentValue);
+                        startActivity(intent);
+                    }
                 }
             }
         });

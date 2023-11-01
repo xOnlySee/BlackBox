@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ScrollView;
@@ -22,6 +23,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Only See
@@ -34,6 +40,8 @@ public class Login extends AppCompatActivity {
     ScrollView layout;
     AwesomeValidation awesomeValidation;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore firestore;
+    CollectionReference collectionReference;
 
     /**
      * Declaramos la funcionabilidad del botón de volver atras
@@ -69,6 +77,12 @@ public class Login extends AppCompatActivity {
 
         //Instanciamos el objeto AwesomeValidation donde especificamos el tipo de validación
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+
+        //Instanciamos el objeto de la clase FireStore
+        firestore = FirebaseFirestore.getInstance();
+
+        //Instaniamos el objeto de la clase CollectionReference donde le pasamo el nombre de la colección
+        collectionReference = firestore.collection("perfil");
 
         //Añadimos la validación a los campos pertinentes
         awesomeValidation.addValidation(this, R.id.inputEmail_logInScreen, Patterns.EMAIL_ADDRESS, R.string.email_error);
@@ -158,6 +172,9 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //En caso de que haya salido todo bien
                         if (task.isSuccessful()) {
+                            //Llamamos al método donde creará el perfil vacio al nuevo usuario
+                            createProfile(email);
+
                             //Creamos una SnackBar para informar al usuario que la cuenta ha sido creada de forma exitosa
                             Snackbar snackbar = Snackbar.make(layout, "Cuenta creada con éxito", Snackbar.LENGTH_INDEFINITE);
                             snackbar.setAction("Iniciar sesión", new View.OnClickListener() {
@@ -173,8 +190,30 @@ public class Login extends AppCompatActivity {
                                 }
                             });
                             snackbar.show();
+
+                        //En cualquier otro caso
+                        } else {
+                            //Creamos una Snackbar para informar al usuario
+                            Snackbar snackbar = Snackbar.make(layout, "Ha ocurrido un error", Snackbar.LENGTH_SHORT);
+                            snackbar.show();
                         }
                     }
                 });
+    }
+
+    /**
+     * Método donde crearemos el perfil vacio del nuevo usuario
+     * @param email Variable de tipo String donde almacena el email
+     */
+    public void createProfile(String email) {
+        //Creamos un Map donde añadimos los campos vacios para crear el perfil del nuevo usuario vacio
+        Map<String, String> map = new HashMap<>();
+            map.put("biografia", "");
+            map.put("email", email);
+            map.put("imagenPerfil", "");
+            map.put("nombreUsuario", email);
+
+        //Usamos el objeto de la clase FireBaseFireStore donde le indicamos el nombre de la colección y el map que queremos añadir
+        firestore.collection("perfil").add(map);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.blackbox.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,53 +8,35 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.blackbox.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link Home#newInstance} factory method to
- * create an instance of this fragment.
+ * @author Only See
+ * Fragmento correspondiente al fragmento de inicio
  */
 public class Home extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //Declaramos los elementos necesarios
+    View view;
+    FirebaseFirestore firestore;
+    DocumentReference documentReference;
+    private String idDocumentValue;
 
     public Home() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Home.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Home newInstance(String param1, String param2) {
-        Home fragment = new Home();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            idDocumentValue = getArguments().getString("idDocument");
         }
     }
 
@@ -61,6 +44,34 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.home, container, false);
+        view = inflater.inflate(R.layout.home, container, false);
+
+        //Instanciamos el objeto de la clase FirebaseFireStore
+        firestore = FirebaseFirestore.getInstance();
+
+        //Instanciamos el objeto de la clase DocumentReference
+        documentReference = firestore.collection("perfil").document(idDocumentValue);
+
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.getString("biografia").isEmpty() || documentSnapshot.getString("imagenPerfil").isEmpty()) {
+                    MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getActivity())
+                            .setTitle("Configura tu perfil")
+                            .setMessage("Para poder continar debes de configurar tu perfil")
+                            .setPositiveButton("De acuerdo", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    /*
+                                    CONFIGURAR ACTIVIDAD DE EDITAR PERFIL
+                                     */
+                                }
+                            });
+                    materialAlertDialogBuilder.show();
+                }
+            }
+        });
+
+        return view;
     }
 }
