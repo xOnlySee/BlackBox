@@ -1,6 +1,7 @@
 package com.example.blackbox.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,9 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.blackbox.R;
+import com.example.blackbox.activities.EditProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.DocumentReference;
@@ -62,9 +63,10 @@ public class Home extends Fragment {
                             .setPositiveButton("De acuerdo", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    /*
-                                    CONFIGURAR ACTIVIDAD DE EDITAR PERFIL
-                                     */
+                                    //Creamos un Intent que vaya a la pantalla de editar perfil y le enviamos el email del usuario
+                                    Intent intent = new Intent(getActivity().getApplicationContext(), EditProfile.class);
+                                        intent.putExtra("idDocument", idDocumentValue);
+                                    startActivity(intent);
                                 }
                             });
                     materialAlertDialogBuilder.show();

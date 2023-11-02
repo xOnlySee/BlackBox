@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.BlackBox" parent="Base.Theme.BlackBox" />
+
+    <style name="imageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50dp</item>
+    </style>
 </resources>

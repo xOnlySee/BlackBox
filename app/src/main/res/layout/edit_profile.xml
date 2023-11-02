@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editInformation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        tools:context=".activities.EditProfile" >
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageProfile_editProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="36dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/imageView" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonChangeImageProfile_editProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="104dp"
+            android:src="@drawable/baseline_camera_alt_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.729"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:backgroundTint="#694d76"
+            app:tint="@color/white"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/textInformation_edtiProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Edita tu información personal"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageProfile_editProfile" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutUserName_editProfile"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInformation_edtiProfile">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputUserName_editProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPersonName"
+                android:maxLength="30"
+                android:hint="Introduce tu nombre de usuario" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutBiography_editProfile"
+            android:layout_width="330dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="50dp"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutUserName_editProfile" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputBiography_editProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start|top"
+                android:hint="Introduce tu biografia"
+                android:inputType="textMultiLine"
+                android:maxLength="250" />
+        </com.google.android.material.textfield.TextInputLayout>
+        
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonConfirmation_editProfile"
+            android:layout_width="340dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="90dp"
+            android:text="Confirmar cambios"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutBiography_editProfile" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
