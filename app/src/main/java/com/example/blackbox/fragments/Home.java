@@ -53,13 +53,21 @@ public class Home extends Fragment {
         //Instanciamos el objeto de la clase DocumentReference
         documentReference = firestore.collection("perfil").document(idDocumentValue);
 
+        //Usamos el objeto de la clase DocumentReferences para añadir la funcionalidad
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            /**
+             * Creamos y añadimos la funcionalidad al MaterialAlertDialog
+             * @param documentSnapshot Objeto de la clase DocumentSnapshot
+             */
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getString("biografia").isEmpty() || documentSnapshot.getString("imagenPerfil").isEmpty()) {
+                //En caso de que los campos de la biografia, el nombre de usuario o la imagen del perfil esten vacios...
+                if (documentSnapshot.getString("biografia").isEmpty() || documentSnapshot.getString("nombreUsuario").isEmpty() || documentSnapshot.getString("imagenPerfil").isEmpty()) {
+                    //Creamos un MaterialAlertDialog
                     MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getActivity())
                             .setTitle("Configura tu perfil")
                             .setMessage("Para poder continar debes de configurar tu perfil")
+                            .setCancelable(false)
                             .setPositiveButton("De acuerdo", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

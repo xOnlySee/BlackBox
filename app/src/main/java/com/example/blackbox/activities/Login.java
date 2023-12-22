@@ -1,7 +1,9 @@
 package com.example.blackbox.activities;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -42,18 +45,6 @@ public class Login extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firestore;
     CollectionReference collectionReference;
-
-    /**
-     * Declaramos la funcionabilidad del botón de volver atras
-     */
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        //Creamos un Intent que vaya a la actividad de inicio de sesión
-        Intent intent = new Intent(Login.this, SignIn.class);
-        startActivity(intent);
-    }
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -87,6 +78,25 @@ public class Login extends AppCompatActivity {
         //Añadimos la validación a los campos pertinentes
         awesomeValidation.addValidation(this, R.id.inputEmail_logInScreen, Patterns.EMAIL_ADDRESS, R.string.email_error);
         awesomeValidation.addValidation(this, R.id.inputPassword_logInScreen, "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}", R.string.password_error);
+
+        //Creamos e instanciamos el objeto de la clase LifecycleOwner
+        LifecycleOwner lifecycleOwner = this;
+
+        //Creamos e instanciamos el objeto de la clase OnBackPressedCallBack
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            /**
+             * Añadimos la funcionalidad del botón de retroceso
+             */
+            @Override
+            public void handleOnBackPressed() {
+                //Creamos un Intent que vaya a la actividad de incio de sesión
+                Intent intent = new Intent(Login.this, SignIn.class);
+                startActivity(intent);
+            }
+        };
+
+        //Usamos el métodfo .addCallback() donde le pasamos la vida del ciclo y la funcionalidad del botón del retroceso
+        getOnBackPressedDispatcher().addCallback(lifecycleOwner, onBackPressedCallback);
 
         //Añadimos la funcionabilidad del botón de creación de cuenta
         createAccountButton.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +220,7 @@ public class Login extends AppCompatActivity {
         Map<String, String> map = new HashMap<>();
             map.put("biografia", "");
             map.put("email", email);
-            map.put("imagenPerfil", "");
+            map.put("imagenPerfil", "https://firebasestorage.googleapis.com/v0/b/blackbox-10c15.appspot.com/o/imagenes_perfil%2Fimagen_estandar.jpeg?alt=media&token=9a953b74-8b58-4df0-8a03-897544c63ec8");
             map.put("nombreUsuario", email);
 
         //Usamos el objeto de la clase FireBaseFireStore donde le indicamos el nombre de la colección y el map que queremos añadir

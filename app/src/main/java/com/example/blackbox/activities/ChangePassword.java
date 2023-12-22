@@ -1,8 +1,10 @@
 package com.example.blackbox.activities;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LifecycleOwner;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -34,18 +36,6 @@ public class ChangePassword extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     AwesomeValidation awesomeValidation;
 
-    /**
-     * Método donde definiremos la funcionabilidad del botón de volver atras
-     */
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        //Creamos un Intent que vaya a la pantalla de inicio de sesión
-        Intent intent = new Intent(ChangePassword.this, SignIn.class);
-        startActivity(intent);
-    }
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +56,26 @@ public class ChangePassword extends AppCompatActivity {
 
         //Instanciamos el objeto de la clase AwesomeValidation donde le indicamos el nivel de validación
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
         awesomeValidation.addValidation(this, R.id.inputEmail_changePasswordScreen, Patterns.EMAIL_ADDRESS, R.string.email_error);
+
+        //Creamos e instanciamos el objeto de la clase LifecycleOwner
+        LifecycleOwner lifecycleOwner = this;
+
+        //Creamos e instanciamos un objetop de la clase OnBackPressedCallBack
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(false) {
+            /**
+             * Añadimos la funcionalidad para el botón de retroceso
+             */
+            @Override
+            public void handleOnBackPressed() {
+                //Creamos un Intent que vaya a la actividad de inicio de sesión
+                Intent intent = new Intent(ChangePassword.this, SignIn.class);
+                startActivity(intent);
+            }
+        };
+
+        //Usamos el método .addCallBack() donde le pasamos el ciclo de vida y la funcionalidad del botón de retroceso
+        getOnBackPressedDispatcher().addCallback(lifecycleOwner, onBackPressedCallback);
 
         //Declaramos la funcionabilidad del botón de cambio de contraseña
         changePasswordButton.setOnClickListener(new View.OnClickListener() {

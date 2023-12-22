@@ -1,7 +1,9 @@
 package com.example.blackbox.activities;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -40,22 +42,6 @@ public class SignIn extends AppCompatActivity {
     CollectionReference collectionReference;
     private String idDocumentValue;
 
-    /**
-     * Método donde definiremos la funcionabilidad del botón de volver atras
-     */
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        //Creamos un try-cacth para controlar los errores
-        try {
-            //Usamos el método finalize() donde saldremos de la aplicación
-            finalize();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +70,28 @@ public class SignIn extends AppCompatActivity {
 
         //Instanciamos el objeto de la clase CollectionReference
         collectionReference = firestore.collection("perfil");
+
+        //Creamos e instanciamos el objeto de la clase LifecycleOwner
+        LifecycleOwner lifecycleOwner = this;
+
+        //Creamos e instaniamos el objeto de la clase OnBackPressedCallBack
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            /**
+             * Añadimos la funcionabilidad del botón de retroceso
+             */
+            @Override
+            public void handleOnBackPressed() {
+                try {
+                    //Usamos el método .finalize() donde finalizamos el proceso de "Black Box"
+                    finish();
+                } catch (Throwable e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        //Usamos el método .addCallBack() donde le pasamos la vida del ciclo y la funcionalidad del botón de retroceso
+        getOnBackPressedDispatcher().addCallback(lifecycleOwner, onBackPressedCallback);
 
         //Añadimos la funcionabilidad al TextView de cambiar la contraseña
         changePasswordText.setOnClickListener(new View.OnClickListener() {
