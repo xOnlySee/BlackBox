@@ -122,10 +122,12 @@ public class ChangePassword extends AppCompatActivity {
                     boolean exist = !task.getResult().getSignInMethods().isEmpty();
 
                     if (exist) {
-                        Log.i("Cuenta", "La cuenta SI esta registrada");
+                        Log.i("Cuenta", "La cuenta " + email + " SI esta registrada");
                     } else {
-                        Log.e("Cuenta", "La cuenta NO esta registrada");
+                        Log.e("Cuenta", "La cuenta " + email + " NO esta registrada");
                     }
+                } else {
+                    Log.e("Cuenta", "Error al verificar la cuenta: " + task.getException().toString());
                 }
             }
         });
