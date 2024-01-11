@@ -1,5 +1,7 @@
 # Descripción del Proyecto: Black Box - Aplicación Android de Compartir Vivencias
 
+![Logo de Black Box](https://raw.githubusercontent.com/xOnlySee/BlackBox/main/Documentacion/Icono.png)
+
 ## Resumen
 
 "Black Box" es una aplicación Android desarrollada en tiempo libre con el propósito de fortalecer y ampliar conocimientos de programación. Esta aplicación permite a los usuarios compartir vivencias diarias a través de la plataforma. La aplicación incorpora un sistema de chat que facilita la comunicación entre los usuarios. Entre las funciones destacadas se encuentran el inicio de sesión, creación de cuentas, y recuperación de contraseñas, implementados mediante Firebase para una gestión eficiente de la información. Además, se ha utilizado Android Studio, Java, XML y Material Design para lograr una interfaz atractiva y funcional.
